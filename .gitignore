@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+#Userfile
+*.vcxproj.user
+CellDetails.txt
+TileGrid.txt
+
+#Directories
+Debug/
+.vs/
+x64/

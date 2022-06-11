@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PathfindingAlgorithms", "PathfindingAlgorithms\PathfindingAlgorithms.vcxproj", "{67C799DF-4E9D-45B8-8368-FCBC8FCFBC93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67C799DF-4E9D-45B8-8368-FCBC8FCFBC93}.Debug|x64.ActiveCfg = Debug|x64
+		{67C799DF-4E9D-45B8-8368-FCBC8FCFBC93}.Debug|x64.Build.0 = Debug|x64
+		{67C799DF-4E9D-45B8-8368-FCBC8FCFBC93}.Release|x64.ActiveCfg = Release|x64
+		{67C799DF-4E9D-45B8-8368-FCBC8FCFBC93}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC81174D-3A70-48B0-8FB3-5840E75D750A}
+	EndGlobalSection
+EndGlobal
