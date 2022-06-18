@@ -3,18 +3,9 @@
 #include <chrono>
 #include <iostream>
 #include <forward_list>
-#include "Graphics.h"
+#include <vector>
+#include "UserTypes.h"
 
-struct DFSCoords
-{
-    int y;
-    int x;
-};
-
-
-struct Tile;
-struct ImageTile;
-struct Node;
 class DFS
 {
 public:
@@ -33,7 +24,7 @@ public:
 
 
 private:
-    std::stack<DFSCoords> Line;
+    std::stack<Vector2Int> Line;
     std::forward_list<ImageTile> Path;
     bool Searching;
     bool First;
