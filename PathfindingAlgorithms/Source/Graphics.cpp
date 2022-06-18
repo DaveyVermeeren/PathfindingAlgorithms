@@ -8,6 +8,7 @@ Graphics::Graphics(std::string Filename, SearchTypes Newtype)
 
     Type = Newtype;
 
+    //Using in case of future expansion
     switch (Type)
     {
     case SearchTypes::TypeBFS:
@@ -30,9 +31,9 @@ Graphics::~Graphics()
     
 }
 
-void Render()
+void Graphics::Render()
 {
-    for (auto CurVec : Graphic->ImageMap)
+    for (auto CurVec : ImageMap)
     {
         for (auto Image : CurVec)
         {
@@ -42,78 +43,64 @@ void Render()
 }
 
 
-void Update()
+void Graphics::Update()
 {
-    switch (Graphic->Type)
+    //Using in case of future expansion
+    switch (Type)
     {
     case SearchTypes::TypeBFS:
-        Graphic->BreadthFirst->Traverse(Graphic->ImageMap, 
-                                       Graphic->StartPoint.y,
-                                       Graphic->StartPoint.x);
+        BreadthFirst->Traverse(ImageMap, 
+                              StartPoint.y,
+                              StartPoint.x);
         
-        Graphic->UpdateMap(Graphic->BreadthFirst->HasVisited, 
-                          Graphic->BreadthFirst->CurrentX,
-                          Graphic->BreadthFirst->CurrentY,
-                          Graphic->BreadthFirst->DirRow, 
-                          Graphic->BreadthFirst->DirCol,
-                          Graphic->BreadthFirst->TargetFound);
+        UpdateMap(BreadthFirst->HasVisited, 
+                     BreadthFirst->CurrentX,
+                     BreadthFirst->CurrentY,
+                     BreadthFirst->DirRow, 
+                     BreadthFirst->DirCol,
+                     BreadthFirst->TargetFound);
         break;
 
     case SearchTypes::TypeDFS:
-        Graphic->DepthFirst->Traverse(Graphic->ImageMap,
-            Graphic->StartPoint.y,
-            Graphic->StartPoint.x);
+        DepthFirst->Traverse(ImageMap,
+                            StartPoint.y,
+                            StartPoint.x);
             
-        Graphic->UpdateMap(Graphic->DepthFirst->HasVisited,
-                             Graphic->DepthFirst->CurrentX,
-                             Graphic->DepthFirst->CurrentY,
-                             Graphic->DepthFirst->DirRow,
-                             Graphic->DepthFirst->DirCol,
-                             Graphic->DepthFirst->TargetFound);
+        UpdateMap(DepthFirst->HasVisited,
+                     DepthFirst->CurrentX,
+                     DepthFirst->CurrentY,
+                     DepthFirst->DirRow,
+                     DepthFirst->DirCol,
+                     DepthFirst->TargetFound);
         break;
 
     case SearchTypes::TypeAStar:
-        Graphic->AStarSearch->Traverse(Graphic->ImageMap,
-            { Graphic->StartPoint.y, Graphic->StartPoint.x },
-            {Graphic->EndPoint.y, Graphic->EndPoint.x});
+        AStarSearch->Traverse(ImageMap,
+            { StartPoint.y, StartPoint.x },
+            {EndPoint.y, EndPoint.x});
 
-        Graphic->UpdateMapAStar(Graphic->AStarSearch->ClosedList,
-                             Graphic->AStarSearch->Current.x,
-                             Graphic->AStarSearch->Current.y,
-                             Graphic->AStarSearch->DirRow,
-                             Graphic->AStarSearch->DirCol,
-                             (Graphic->AStarSearch->TargetFound &&
-                              Graphic->AStarSearch->FirstPath),
-                             Graphic->AStarSearch->Path);
+        UpdateMapAStar(AStarSearch->ClosedList,
+                             AStarSearch->Current.x,
+                             AStarSearch->Current.y,
+                             AStarSearch->DirRow,
+                             AStarSearch->DirCol,
+                             (AStarSearch->TargetFound &&
+                              AStarSearch->FirstPath),
+                             AStarSearch->Path);
         break;
     }
 }
 
-void Graphics::Create2DWindow()
+void Graphics::ReplaceTile(std::string Filename, Vector2Int Coords)
 {
-    Window = S2D_CreateWindow(
-        "Pathfinding Algorithms Test",
-        WIDTH, HEIGHT,
-        Update, Render,
-        S2D_RESIZABLE
-    );
-
-    S2D_Show(Window);
-}
-
-void Graphics::AddTiles()
-{
-    for (Tile tile : Tiles)
-    {
-        S2D_Image* Temp = S2D_CreateImage(tile.Filename.c_str());
-        S2D_Image* Old = ImageMap[tile.Index.y][tile.Index.x].Image;
-        Temp->x = Old->x;
-        Temp->y = Old->y;
-        Temp->width = Old->width;
-        Temp->height = Old->height;
-        S2D_FreeImage(ImageMap[tile.Index.y][tile.Index.x].Image);
-        ImageMap[tile.Index.y][tile.Index.x] = { Temp, tile.Type };
-    }
+    S2D_Image* Temp = S2D_CreateImage(Filename.c_str());
+    S2D_Image* Old = ImageMap[Coords.y][Coords.x].Image;
+    Temp->x = Old->x;
+    Temp->y = Old->y;
+    Temp->width = Old->width;
+    Temp->height = Old->height;
+    S2D_FreeImage(ImageMap[Coords.y][Coords.x].Image);
+    ImageMap[Coords.y][Coords.x] = { Temp, 0 };
 }
 
 void Graphics::UpdateMap(std::vector<std::vector<Node>>& Visited, int x, int y, int DirRow[], int DirCol[], bool Found)
@@ -137,28 +124,14 @@ void Graphics::UpdateMap(std::vector<std::vector<Node>>& Visited, int x, int y, 
 
             if (Visited[adjy][adjx].Visited && !Visited[adjy][adjx].Changed)
             {
-                S2D_Image* Temp = S2D_CreateImage("Resource/Yellow.png");
-                S2D_Image* Old = ImageMap[adjy][adjx].Image;
-                Temp->x = Old->x;
-                Temp->y = Old->y;
-                Temp->width = Old->width;
-                Temp->height = Old->height;
-                S2D_FreeImage(ImageMap[adjy][adjx].Image);
-                ImageMap[adjy][adjx] = { Temp, 0 };
+                ReplaceTile("Resource/Yellow.png", { adjy, adjx });
                 Visited[adjy][adjx].Changed = true;
             }
         }
     }
     else
     {
-        S2D_Image* Temp = S2D_CreateImage("Resource/Orange.png");
-        S2D_Image* Old = ImageMap[y][x].Image;
-        Temp->x = Old->x;
-        Temp->y = Old->y;
-        Temp->width = Old->width;
-        Temp->height = Old->height;
-        S2D_FreeImage(ImageMap[y][x].Image);
-        ImageMap[y][x] = { Temp, 0 };
+        ReplaceTile("Resource/Orange.png", { y, x });
     }
 }
 
@@ -166,7 +139,7 @@ void Graphics::UpdateMapAStar(std::vector<std::vector<Node>>& Visited, int x, in
 {
     if (!Found)
     {
-        for (int i = 0; i < Graphic->AStarSearch->Directions; i++)
+        for (int i = 0; i < AStarSearch->Directions; i++)
         {
             int adjx = x + DirRow[i];
             int adjy = y + DirCol[i];
@@ -183,14 +156,7 @@ void Graphics::UpdateMapAStar(std::vector<std::vector<Node>>& Visited, int x, in
 
             if (Visited[adjy][adjx].Visited && !Visited[adjy][adjx].Changed)
             {
-                S2D_Image* Temp = S2D_CreateImage("Resource/Yellow.png");
-                S2D_Image* Old = ImageMap[adjy][adjx].Image;
-                Temp->x = Old->x;
-                Temp->y = Old->y;
-                Temp->width = Old->width;
-                Temp->height = Old->height;
-                S2D_FreeImage(ImageMap[adjy][adjx].Image);
-                ImageMap[adjy][adjx] = { Temp, 0 };
+                ReplaceTile("Resource/Yellow.png", { adjy, adjx });
                 Visited[adjy][adjx].Changed = true;
             }
         }
@@ -204,14 +170,7 @@ void Graphics::UpdateMapAStar(std::vector<std::vector<Node>>& Visited, int x, in
         ImageTile CurrentTile = Path.front();
         if (!(CurrentTile.Pos.x == StartPoint.x && CurrentTile.Pos.y == StartPoint.y))
         {
-            S2D_Image* Temp = S2D_CreateImage("Resource/Orange.png");
-            S2D_Image* Old = ImageMap[CurrentTile.Pos.y][CurrentTile.Pos.x].Image;
-            Temp->x = Old->x;
-            Temp->y = Old->y;
-            Temp->width = Old->width;
-            Temp->height = Old->height;
-            S2D_FreeImage(ImageMap[CurrentTile.Pos.y][CurrentTile.Pos.x].Image);
-            ImageMap[CurrentTile.Pos.y][CurrentTile.Pos.x] = { Temp, 0 };
+            ReplaceTile("Resource/Orange.png", CurrentTile.Pos);
         }
         Path.pop_front();
     }

@@ -1,13 +1,12 @@
 #pragma once
 #include <vector>
-#include <simple2d.h>
 #include <string>
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include "UserTypes.h"
 #include "BFS.h"
 #include "DFS.h"
 #include "AStar.h"
-#undef main
 
 constexpr int HEIGHT = 768;
 constexpr int WIDTH = 1024;
@@ -22,8 +21,6 @@ constexpr int HalfTileSize = TileSize / 2;
 // 2 - Target
 // 3 - AI
 
-//TODO: Refactor to get rid of circular dependencies, it's annoying
-
 enum class SearchTypes
 {
     TypeBFS,
@@ -31,64 +28,16 @@ enum class SearchTypes
     TypeAStar,
 };
 
-struct Vector2Int
-{
-    int y;
-    int x;
-
-    Vector2Int& operator=(const Vector2Int& a_Vec)
-    {
-        this->x = a_Vec.x;
-        this->y = a_Vec.y;
-        return *this;
-    }
-};
-
-struct Tile
-{
-    Vector2Int Index;
-    std::string Filename;
-    int Type;
-};
-
-struct ImageTile
-{
-    S2D_Image* Image;
-    int Type;
-    Vector2Int Pos;
-};
-
-struct Node
-{
-    bool Visited;
-    bool Changed;
-    ImageTile Parent;
-
-    Node& operator=(const Node& a_Node)
-    {
-        this->Visited = a_Node.Visited;
-        this->Parent.Type = a_Node.Parent.Type;
-        this->Parent.Image = a_Node.Parent.Image;
-        this->Parent.Pos.x = a_Node.Parent.Pos.x;
-        this->Parent.Pos.y = a_Node.Parent.Pos.y;
-        return *this;
-    }
-};
-
-struct BFSCoords;
-struct DFSCoords;
-struct ASCoords;
-class BFS;
-class DFS;
-class AStar;
 class Graphics
 {
 public:
     Graphics(std::string Filename, SearchTypes Type);
     ~Graphics();
 
-    void Create2DWindow();
+    void Update();
+    void Render();
     void AddTiles();
+    void ReplaceTile(std::string Filename, Vector2Int Coords);
     void LoadMap(std::string Filename);
     void UpdateMap(std::vector<std::vector<Node>>& Visited, int x, int y, int DirRow[4], int DirCol[4], bool Found);
     void UpdateMapAStar(std::vector<std::vector<Node>>& Visited, int x, int y, int DirRow[4], int DirCol[4], bool Found, std::forward_list<ImageTile>& Path);
@@ -103,7 +52,6 @@ public:
     Vector2Int EndPoint;
 
 private:
-    S2D_Window* Window;
     int MapHeight;
     int MapWidth;
     bool AStarSkip;
