@@ -52,7 +52,7 @@ void DFS::Traverse(std::vector<std::vector<ImageTile>>& Map, int row, int col)
         if (!First)
         {
             begin = std::chrono::steady_clock::now();
-            Line.push(DFSCoords{ row, col });
+            Line.push(Vector2Int{ row, col });
             HasVisited[row][col].Visited = true;
             HasVisited[row][col].Changed = true;
             First = true;
@@ -60,7 +60,7 @@ void DFS::Traverse(std::vector<std::vector<ImageTile>>& Map, int row, int col)
 
         if (!Line.empty())
         {
-            DFSCoords current = Line.top();
+            Vector2Int current = Line.top();
             Line.pop();
             int x = current.x;
             int y = current.y;
