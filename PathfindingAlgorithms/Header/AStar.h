@@ -3,21 +3,17 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <vector>
+#include <deque>
 #include <forward_list>
-#include "Graphics.h"
-
-struct ASCoords
-{
-    int y;
-    int x;
-};
+#include "UserTypes.h"
 
 struct AStarValues
 {
     float f;
     float g;
     float h;
-    ASCoords Parent;
+    Vector2Int Parent;
 
     AStarValues& operator=(const AStarValues& a_Values)
     {
@@ -33,7 +29,7 @@ struct AStarValues
 struct NodeInfo
 {
     float f;
-    ASCoords Pos;
+    Vector2Int Pos;
 
     bool operator<(const NodeInfo& a_Right) const
     {
@@ -46,10 +42,6 @@ struct NodeInfo
     }
 };
 
-struct Vector2Int;
-struct Tile;
-struct ImageTile;
-struct Node;
 class AStar
 {
 public:
@@ -62,15 +54,15 @@ public:
 
     bool IsValid(int col, int row);
     bool IsFree(std::vector<std::vector<ImageTile>>& Map, int col, int row);
-    void Traverse(std::vector<std::vector<ImageTile>>& Map, ASCoords Start, ASCoords Target);
-    float CalculateManhattanHeuristic(ASCoords CurrentCoords, ASCoords TargetCoords);
-    float CalculateDiagonalHeuristic(ASCoords CurrentCoords, ASCoords TargetCoords);
-    float CalculateEuclideanHeuristic(ASCoords CurrentCoords, ASCoords TargetCoords);
-    float CalculateEuclideanSquaredHeuristic(ASCoords CurrentCoords, ASCoords TargetCoords);
+    void Traverse(std::vector<std::vector<ImageTile>>& Map, Vector2Int Start, Vector2Int Target);
+    float CalculateManhattanHeuristic(Vector2Int CurrentCoords, Vector2Int TargetCoords);
+    float CalculateDiagonalHeuristic(Vector2Int CurrentCoords, Vector2Int TargetCoords);
+    float CalculateEuclideanHeuristic(Vector2Int CurrentCoords, Vector2Int TargetCoords);
+    float CalculateEuclideanSquaredHeuristic(Vector2Int CurrentCoords, Vector2Int TargetCoords);
     void InsertionSort(std::deque<NodeInfo>& a_OpenList);
     void PrintCellDetails();
 
-    ASCoords Current;
+    Vector2Int Current;
     bool TargetFound;
     bool FirstPath;
     //int DirRow[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };

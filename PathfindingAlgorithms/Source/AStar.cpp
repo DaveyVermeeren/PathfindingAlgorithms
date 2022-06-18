@@ -54,7 +54,7 @@ bool AStar::IsFree(std::vector<std::vector<ImageTile>>& Map, int col, int row)
     return false;
 }
 
-void AStar::Traverse(std::vector<std::vector<ImageTile>>& Map, ASCoords Start, ASCoords Target)
+void AStar::Traverse(std::vector<std::vector<ImageTile>>& Map, Vector2Int Start, Vector2Int Target)
 {
     if (Searching)
     {
@@ -115,7 +115,7 @@ void AStar::Traverse(std::vector<std::vector<ImageTile>>& Map, ASCoords Start, A
             
                 for (int i = 0; i < Directions; i++)
                 {
-                    ASCoords Neighbour = { Current.y + DirCol[i], Current.x + DirRow[i] };
+                    Vector2Int Neighbour = { Current.y + DirCol[i], Current.x + DirRow[i] };
 
                     if (IsValid(Neighbour.y, Neighbour.x))
                     {
@@ -194,7 +194,7 @@ void AStar::Traverse(std::vector<std::vector<ImageTile>>& Map, ASCoords Start, A
     }
 }
 
-float AStar::CalculateManhattanHeuristic(ASCoords CurrentCoords, ASCoords TargetCoords)
+float AStar::CalculateManhattanHeuristic(Vector2Int CurrentCoords, Vector2Int TargetCoords)
 {
     float dx = static_cast<float>(abs(CurrentCoords.x - TargetCoords.x));
     float dy = static_cast<float>(abs(CurrentCoords.y - TargetCoords.y));
@@ -202,7 +202,7 @@ float AStar::CalculateManhattanHeuristic(ASCoords CurrentCoords, ASCoords Target
     return Heuristic;
 }
 
-float AStar::CalculateDiagonalHeuristic(ASCoords CurrentCoords, ASCoords TargetCoords)
+float AStar::CalculateDiagonalHeuristic(Vector2Int CurrentCoords, Vector2Int TargetCoords)
 {
     float dx = static_cast<float>(abs(CurrentCoords.x - TargetCoords.x));
     float dy = static_cast<float>(abs(CurrentCoords.y - TargetCoords.y));
@@ -217,7 +217,7 @@ float AStar::CalculateDiagonalHeuristic(ASCoords CurrentCoords, ASCoords TargetC
     return Heuristic;
 }
 
-float AStar::CalculateEuclideanHeuristic(ASCoords CurrentCoords, ASCoords TargetCoords)
+float AStar::CalculateEuclideanHeuristic(Vector2Int CurrentCoords, Vector2Int TargetCoords)
 {
     float dx = static_cast<float>(abs(CurrentCoords.x - TargetCoords.x));
     float dy = static_cast<float>(abs(CurrentCoords.y - TargetCoords.y));
@@ -227,7 +227,7 @@ float AStar::CalculateEuclideanHeuristic(ASCoords CurrentCoords, ASCoords Target
     return Heuristic;
 }
 
-float AStar::CalculateEuclideanSquaredHeuristic(ASCoords CurrentCoords, ASCoords TargetCoords)
+float AStar::CalculateEuclideanSquaredHeuristic(Vector2Int CurrentCoords, Vector2Int TargetCoords)
 {
     float dx = static_cast<float>(abs(CurrentCoords.x - TargetCoords.x));
     float dy = static_cast<float>(abs(CurrentCoords.y - TargetCoords.y));
