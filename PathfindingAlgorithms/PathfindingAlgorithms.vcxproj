@@ -190,6 +190,7 @@ xcopy /y /d "$(ProjectDir)Library\simple2d\zlib1.dll" "$(TargetDir)"</Command>
     <ClInclude Include="Header\DFS.h" />
     <ClInclude Include="Header\Graphics.h" />
     <ClInclude Include="Header\MazeGenerator.h" />
+    <ClInclude Include="Header\UserTypes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
