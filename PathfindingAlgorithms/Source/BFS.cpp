@@ -53,7 +53,7 @@ void BFS::Traverse(std::vector<std::vector<ImageTile>>& Map, int row, int col)
         if (!First)
         {
             begin = std::chrono::steady_clock::now();
-            Line.push(BFSCoords{ row, col });
+            Line.push(Vector2Int{ row, col });
             HasVisited[row][col].Visited = true;
             HasVisited[row][col].Changed = true;
             First = true;
@@ -61,7 +61,7 @@ void BFS::Traverse(std::vector<std::vector<ImageTile>>& Map, int row, int col)
 
         if (!Line.empty())
         {
-            BFSCoords cell = Line.front();
+            Vector2Int cell = Line.front();
             int x = cell.x;
             int y = cell.y;
             CurrentX = x;

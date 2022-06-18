@@ -3,19 +3,9 @@
 #include <queue>
 #include <chrono>
 #include <iostream>
-#include "Graphics.h"
 #include <forward_list>
+#include "UserTypes.h"
 
-struct BFSCoords
-{
-    int y;
-    int x;
-};
-
-struct Vector2Int;
-struct Tile;
-struct ImageTile;
-struct Node;
 class BFS
 {
 public:
@@ -33,7 +23,7 @@ public:
     int DirCol[4] = { -1, 0, 1, 0 };
 
 private:
-    std::queue<BFSCoords> Line;
+    std::queue<Vector2Int> Line;
     std::forward_list<ImageTile> Path;
     bool First;
     bool Last;
