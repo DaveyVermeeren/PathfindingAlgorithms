@@ -1,6 +1,16 @@
 #include "MazeGenerator.h"
 #include "Graphics.h"
 
+void Update()
+{
+    Graphic->Update();
+}
+
+void Render()
+{
+    Graphic->Render();
+}
+
 int main()
 {
     //Some simple console stuff for easier usability
@@ -9,28 +19,24 @@ int main()
     std::string MazeAnswer = "";
     std::string TypeAnswer = "";
     
-    bool AnsweredMaze = false;
-    bool AnsweredType = false;
     bool AllowMaze = false;
 
     //Use random maze?
 
     std::cout << "Create random maze? y/n?\n";
 
-    while(!AnsweredMaze)
+    while(true)
     {
         std::cin >> MazeAnswer;
 
         if (MazeAnswer == "y")
         {
             AllowMaze = true;
-            AnsweredMaze = true;
             break;
         }
 
         if (MazeAnswer == "n")
         {
-            AnsweredMaze = true;
             break;
         }
 
@@ -41,28 +47,25 @@ int main()
 
     std::cout << "Please insert algorithm type: \nFill in either 'BFS', 'DFS' or 'AStar'\n";
 
-    while (!AnsweredType)
+    while (true)
     {
         std::cin >> TypeAnswer;
 
         if (TypeAnswer == "BFS")
         {
             TypeOfSearch = SearchTypes::TypeBFS;
-            AnsweredType = true;
             break;
         }
 
         if (TypeAnswer == "DFS")
         {
             TypeOfSearch = SearchTypes::TypeDFS;
-            AnsweredType = true;
             break;
         }
 
         if (TypeAnswer == "AStar")
         {
             TypeOfSearch = SearchTypes::TypeAStar;
-            AnsweredType = true;
             break;
         }
 
@@ -109,7 +112,16 @@ int main()
         Graphic->EndPoint = { Maze->Target.y, Maze->Target.x };
     }
 
-    Graphic->Create2DWindow();
+    S2D_Window* Window;
+
+    Window = S2D_CreateWindow(
+        "Pathfinding Algorithms Test",
+        WIDTH, HEIGHT,
+        Update, Render,
+        S2D_RESIZABLE
+    );
+
+    S2D_Show(Window);
 
     return 0;
 }
